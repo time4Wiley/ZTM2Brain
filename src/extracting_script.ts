@@ -1,10 +1,6 @@
-import { parseTextBetweenSpanAndDiv } from "./utils";
+import { extractCleanText, parseTextBetweenSpanAndDiv } from "./utils";
 
 console.log("extracting Great")
-
-function extractCleanText(nameText: string):string {
-  return nameText.replace(/\s+/g, " ").trim();
-}
 
 function extractLinks() {
   const x = document.querySelectorAll("a");
@@ -61,8 +57,9 @@ function extractSectionsAndLecturesForCourse(course: Course) {
 
     // let sectionTitle = extractCleanText(sectionTitleElement.textContent ?? "👄");
     // console.log(sectionTitleElement.textContent)
-
-    const section = new Section(sectionTitle)
+    console.log("👄")
+    console.log(sectionTitle)
+    const section = new Section(sectionTitle.trim())
 
     const lectureElements = sectionElement.querySelectorAll<HTMLAnchorElement>(".section-item>a.item")
     console.log(lectureElements.length)
