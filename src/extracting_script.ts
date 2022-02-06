@@ -2,7 +2,7 @@ console.log("extracting Great")
 
 function extractLinks() {
   const x = document.querySelectorAll("a");
-  const myArray = [];
+  const myArray:[string, string][] = [];
   for (let element of x) {
     const nameText = element.textContent;
     if (nameText) {
@@ -19,4 +19,10 @@ function extractLinks() {
 console.log(extractLinks()[0])
 
 // TODO: extract section titles
+
+function extractSectionTitles() {
+
+}
+
+extractSectionTitles()
 
