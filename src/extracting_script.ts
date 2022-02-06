@@ -1,7 +1,5 @@
 console.log("extracting Great")
 
-extractLinks()
-
 function extractLinks() {
   const x = document.querySelectorAll("a");
   const myArray = [];
@@ -15,5 +13,7 @@ function extractLinks() {
 
   }
 
-  console.log(myArray);
+  return myArray
 }
+
+console.log(extractLinks()[0])
