@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
 
-  "name": "Chrome Extension TypeScript Starter",
-  "description": "Chrome Extension, TypeScript, Visual Studio Code",
+  "name": "ZTM2Brain",
+  "description": "parse outline with links for a ZTM course to TheBrain",
   "version": "1.0",
 
   "options_ui": {
