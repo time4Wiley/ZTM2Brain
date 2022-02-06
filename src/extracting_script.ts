@@ -1,3 +1,4 @@
+import { parseTextBetweenSpanAndDiv } from "./utils";
 
 console.log("extracting Great")
 
@@ -42,14 +43,6 @@ class Section {
   }
 }
 
-
-function parseTextBetweenSpanAndDiv(text: string):string {
-
-  let regPattern = "/<\\/span>(\\C*)<div class=\"section-days-to-drip/gm";
-
-  let regExpExecArray = new RegExp(regPattern).exec(text);
-  return regExpExecArray ? regExpExecArray[1] : ""
-}
 
 function extractSectionsAndLecturesForCourse(course: Course) {
   let selectorForCourseSection = "div.course-section";
