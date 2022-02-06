@@ -17,3 +17,6 @@ function extractLinks() {
 }
 
 console.log(extractLinks()[0])
+
+// TODO: extract section titles
+
