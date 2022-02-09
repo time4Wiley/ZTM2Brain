@@ -40,10 +40,28 @@ class Section {
   }
 }
 
-function extractSectionsAndLecturesForCourse(course: Course) {
+function removeLastDirectoryPartsOf(url:string, n:number):string
+{
+  const segments = url.split("/");
+  segments.splice(segments.length - n, n);
+  return( segments.join('/') );
+}
+
+function extractSectionsAndLecturesForCourse() {
+  const course = new Course();
   let selectorForCourseSection = "div.course-section";
   let selectorForSectionTitle = "div.section-title";
   const sectionElements = document.querySelectorAll(selectorForCourseSection);
+
+  let pageURL = document.URL;
+
+  const isWIP = pageURL.indexOf('lectures') > 0
+
+  const regForSectionTitle = isWIP ? "<\\/span>([^\\0]*)</div>" : "<\\/span>([^\\0]*)<div class=\"section-days-to-drip"
+  const selectorForCourseTitle = isWIP ? 'div.course-sidebar-head>h2' : 'div.course-sidebar>h2'
+
+  course.title = document.querySelector(selectorForCourseTitle)?.textContent ?? ''
+  course.url = isWIP ? removeLastDirectoryPartsOf(pageURL, 2) : pageURL
 
   for (let sectionElement of sectionElements) {
 
@@ -52,10 +70,10 @@ function extractSectionsAndLecturesForCourse(course: Course) {
       continue;
     }
 
-    let sectionTitle = parseTextBetweenSpanAndDiv(sectionTitleElement.innerHTML, "<\\/span>([^\\0]*)<div class=\"section-days-to-drip");
+    let sectionTitle = parseTextBetweenSpanAndDiv(sectionTitleElement.innerHTML, regForSectionTitle);
 
     if (!sectionTitle) {
-      sectionTitle = parseTextBetweenSpanAndDiv(sectionTitleElement.outerHTML, "<\\/span>([^\\0]*)</div>");
+      sectionTitle = parseTextBetweenSpanAndDiv(sectionTitleElement.outerHTML, regForSectionTitle);
     }
 
     // let sectionTitle = extractCleanText(sectionTitleElement.textContent ?? "👄");
@@ -83,15 +101,18 @@ function extractSectionsAndLecturesForCourse(course: Course) {
 
   }
 
-
   console.log(sectionElements.length);
+
+  return course
 }
 
 
 class Course {
   private sections: Section[];
+  public title: string = '';
+  public url: string = '';
 
-  constructor(public title: string, public url: string) {
+  constructor() {
     this.sections = [];
   }
 
@@ -100,9 +121,6 @@ class Course {
   }
 }
 
-let title = "";
-let url = "";
-let course = new Course(title, url);
-extractSectionsAndLecturesForCourse(course);
+let course = extractSectionsAndLecturesForCourse();
 
 // copy(course)
