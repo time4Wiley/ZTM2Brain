@@ -1,8 +1,4 @@
-export function parseTextBetweenSpanAndDiv(text: string): string {
-
-  // let regPattern = "/<\/span>(\C*)<div class=\"section-days-to-drip/";
-  let regPattern = "<\\/span>([^\\0]*)<div class=\"section-days-to-drip";
-
+export function parseTextBetweenSpanAndDiv(text: string, regPattern: string): string {
   let regExp = new RegExp(regPattern, "gm");
   let regExpExecArray = regExp.exec(text);
   return regExpExecArray ? regExpExecArray[1] : "";

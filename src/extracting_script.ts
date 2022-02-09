@@ -53,7 +53,11 @@ function extractSectionsAndLecturesForCourse(course: Course) {
       continue
     }
 
-    let sectionTitle = parseTextBetweenSpanAndDiv(sectionTitleElement.innerHTML)
+    let sectionTitle = parseTextBetweenSpanAndDiv(sectionTitleElement.innerHTML, "<\\/span>([^\\0]*)<div class=\"section-days-to-drip")
+
+    if (!sectionTitle) {
+      sectionTitle = parseTextBetweenSpanAndDiv(sectionTitleElement.outerHTML, "<\\/span>([^\\0]*)</div>")
+    }
 
     // let sectionTitle = extractCleanText(sectionTitleElement.textContent ?? "👄");
     // console.log(sectionTitleElement.textContent)
