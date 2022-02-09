@@ -1,7 +1,8 @@
 import { extractCleanText, parseTextBetweenSpanAndDiv } from "./utils";
+import { ERegForSectionTitle } from "./ZTMParsing";
 
 function testParseTextBetweenSpanAndDiv(text: string) {
-  return parseTextBetweenSpanAndDiv(text);
+  return parseTextBetweenSpanAndDiv(text, ERegForSectionTitle.O100);
 }
 
 let title;

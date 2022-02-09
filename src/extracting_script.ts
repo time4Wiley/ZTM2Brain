@@ -1,54 +1,12 @@
-import { extractCleanText, parseTextBetweenSpanAndDiv } from "./utils";
+import { extractCleanText, parseTextBetweenSpanAndDiv, removeLastDirectoryPartsOf } from "./utils";
+import { Course, Lecture, Section } from "./Course";
+import { ERegForSectionTitle } from "./ZTMParsing";
 
-console.log("extracting Great");
-
-function extractLinks() {
-  const x = document.querySelectorAll("a");
-  const myArray: [string, string][] = [];
-  for (let element of x) {
-    const nameText = element.textContent;
-    if (nameText) {
-      const cleanText = extractCleanText(nameText);
-      const cleanLink = element.href;
-      myArray.push([cleanText, cleanLink]);
-    }
-
-  }
-
-  return myArray;
-}
-
-// TODO: extract section titles
-
-class Lecture {
-  constructor(public url: string, public title: string) {
-
-  }
-
-}
-
-class Section {
-  private lectures: Lecture[];
-
-  constructor(public title: string) {
-    this.lectures = [];
-  }
-
-
-  addLecture(lecture: Lecture) {
-    this.lectures.push(lecture);
-  }
-}
-
-function removeLastDirectoryPartsOf(url:string, n:number):string
-{
-  const segments = url.split("/");
-  segments.splice(segments.length - n, n);
-  return( segments.join('/') );
-}
-
-function extractSectionsAndLecturesForCourse() {
+function extractSectionsAndLecturesForCourse(meta: { abbrev: string; brand: string }) {
   const course = new Course();
+
+  course.meta = meta;
+
   let selectorForCourseSection = "div.course-section";
   let selectorForSectionTitle = "div.section-title";
   const sectionElements = document.querySelectorAll(selectorForCourseSection);
@@ -57,7 +15,7 @@ function extractSectionsAndLecturesForCourse() {
 
   const isWIP = pageURL.indexOf('lectures') > 0
 
-  const regForSectionTitle = isWIP ? "<\\/span>([^\\0]*)</div>" : "<\\/span>([^\\0]*)<div class=\"section-days-to-drip"
+  const regForSectionTitle = isWIP ? ERegForSectionTitle.WIP : ERegForSectionTitle.O100
   const selectorForCourseTitle = isWIP ? 'div.course-sidebar-head>h2' : 'div.course-sidebar>h2'
 
   course.title = document.querySelector(selectorForCourseTitle)?.textContent ?? ''
@@ -76,10 +34,7 @@ function extractSectionsAndLecturesForCourse() {
       sectionTitle = parseTextBetweenSpanAndDiv(sectionTitleElement.outerHTML, regForSectionTitle);
     }
 
-    // let sectionTitle = extractCleanText(sectionTitleElement.textContent ?? "👄");
-    // console.log(sectionTitleElement.textContent)
-    console.log("👄");
-    console.log(sectionTitle);
+    console.log("👄: ", sectionTitle);
     const section = new Section(sectionTitle.trim());
 
     const lectureElements = sectionElement.querySelectorAll<HTMLAnchorElement>(".section-item>a.item");
@@ -101,26 +56,12 @@ function extractSectionsAndLecturesForCourse() {
 
   }
 
-  console.log(sectionElements.length);
-
   return course
 }
 
-
-class Course {
-  private sections: Section[];
-  public title: string = '';
-  public url: string = '';
-
-  constructor() {
-    this.sections = [];
-  }
-
-  addSection(section: Section) {
-    this.sections.push(section);
-  }
-}
-
-let course = extractSectionsAndLecturesForCourse();
+const brand = 'ZTM'
+const abbrev = 'FPY'
+const meta = {brand, abbrev}
+let course = extractSectionsAndLecturesForCourse(meta);
 
 // copy(course)
