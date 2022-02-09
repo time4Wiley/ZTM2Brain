@@ -1,10 +1,10 @@
 import { extractCleanText, parseTextBetweenSpanAndDiv } from "./utils";
 
-console.log("extracting Great")
+console.log("extracting Great");
 
 function extractLinks() {
   const x = document.querySelectorAll("a");
-  const myArray:[string, string][] = [];
+  const myArray: [string, string][] = [];
   for (let element of x) {
     const nameText = element.textContent;
     if (nameText) {
@@ -15,7 +15,7 @@ function extractLinks() {
 
   }
 
-  return myArray
+  return myArray;
 }
 
 // TODO: extract section titles
@@ -29,16 +29,16 @@ class Lecture {
 
 class Section {
   private lectures: Lecture[];
+
   constructor(public title: string) {
-    this.lectures = []
+    this.lectures = [];
   }
 
 
   addLecture(lecture: Lecture) {
-    this.lectures.push(lecture)
+    this.lectures.push(lecture);
   }
 }
-
 
 function extractSectionsAndLecturesForCourse(course: Course) {
   let selectorForCourseSection = "div.course-section";
@@ -47,29 +47,28 @@ function extractSectionsAndLecturesForCourse(course: Course) {
 
   for (let sectionElement of sectionElements) {
 
-
-    const sectionTitleElement = sectionElement.querySelector(selectorForSectionTitle)
+    const sectionTitleElement = sectionElement.querySelector(selectorForSectionTitle);
     if (!sectionTitleElement) {
-      continue
+      continue;
     }
 
-    let sectionTitle = parseTextBetweenSpanAndDiv(sectionTitleElement.innerHTML, "<\\/span>([^\\0]*)<div class=\"section-days-to-drip")
+    let sectionTitle = parseTextBetweenSpanAndDiv(sectionTitleElement.innerHTML, "<\\/span>([^\\0]*)<div class=\"section-days-to-drip");
 
     if (!sectionTitle) {
-      sectionTitle = parseTextBetweenSpanAndDiv(sectionTitleElement.outerHTML, "<\\/span>([^\\0]*)</div>")
+      sectionTitle = parseTextBetweenSpanAndDiv(sectionTitleElement.outerHTML, "<\\/span>([^\\0]*)</div>");
     }
 
     // let sectionTitle = extractCleanText(sectionTitleElement.textContent ?? "👄");
     // console.log(sectionTitleElement.textContent)
-    console.log("👄")
-    console.log(sectionTitle)
-    const section = new Section(sectionTitle.trim())
+    console.log("👄");
+    console.log(sectionTitle);
+    const section = new Section(sectionTitle.trim());
 
-    const lectureElements = sectionElement.querySelectorAll<HTMLAnchorElement>(".section-item>a.item")
-    console.log(lectureElements.length)
+    const lectureElements = sectionElement.querySelectorAll<HTMLAnchorElement>(".section-item>a.item");
+    console.log(lectureElements.length);
     for (let lectureElement of lectureElements) {
       let lectureURL = lectureElement.href;
-      const lectureNameElement = lectureElement.querySelector<HTMLSpanElement>("div.title-container>span.lecture-name")
+      const lectureNameElement = lectureElement.querySelector<HTMLSpanElement>("div.title-container>span.lecture-name");
 
       let lectureTitle = "";
 
@@ -77,33 +76,33 @@ function extractSectionsAndLecturesForCourse(course: Course) {
         lectureTitle = extractCleanText(lectureNameElement.textContent ?? "");
       }
 
-      section.addLecture(new Lecture(lectureURL, lectureTitle))
+      section.addLecture(new Lecture(lectureURL, lectureTitle));
 
     }
-    course.addSection(section)
+    course.addSection(section);
 
   }
 
 
-
-  console.log(sectionElements.length)
+  console.log(sectionElements.length);
 }
 
 
 class Course {
   private sections: Section[];
+
   constructor(public title: string, public url: string) {
-    this.sections = []
+    this.sections = [];
   }
 
   addSection(section: Section) {
-    this.sections.push(section)
+    this.sections.push(section);
   }
 }
 
-let title = ""
-let url = ""
+let title = "";
+let url = "";
 let course = new Course(title, url);
-extractSectionsAndLecturesForCourse(course)
+extractSectionsAndLecturesForCourse(course);
 
 // copy(course)

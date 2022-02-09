@@ -12,7 +12,7 @@ const Options = () => {
     chrome.storage.sync.get(
       {
         favoriteColor: "red",
-        likesColor: true,
+        likesColor: true
       },
       (items) => {
         setColor(items.favoriteColor);
@@ -26,7 +26,7 @@ const Options = () => {
     chrome.storage.sync.set(
       {
         favoriteColor: color,
-        likesColor: like,
+        likesColor: like
       },
       () => {
         // Update status to let user know options were saved.
@@ -43,14 +43,14 @@ const Options = () => {
     <>
       <div>
         Favorite color: <select
-          value={color}
-          onChange={(event) => setColor(event.target.value)}
-        >
-          <option value="red">red</option>
-          <option value="green">green</option>
-          <option value="blue">blue</option>
-          <option value="yellow">yellow</option>
-        </select>
+        value={color}
+        onChange={(event) => setColor(event.target.value)}
+      >
+        <option value="red">red</option>
+        <option value="green">green</option>
+        <option value="blue">blue</option>
+        <option value="yellow">yellow</option>
+      </select>
       </div>
       <div>
         <label>

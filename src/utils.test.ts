@@ -29,10 +29,10 @@ title = testParseTextBetweenSpanAndDiv(`
       </div>
     </div>
     
-`)
+`);
 
-console.log(extractCleanText(title))
+console.log(extractCleanText(title));
 
-let testTitle = "\n      Lifelong Learning\n      \n      "
+let testTitle = "\n      Lifelong Learning\n      \n      ";
 
-console.log(extractCleanText(testTitle))
+console.log(extractCleanText(testTitle));
